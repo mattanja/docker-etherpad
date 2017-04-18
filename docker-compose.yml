@@ -1,0 +1,29 @@
+# Etherpad
+#
+# Run with "docker-compose run -d"
+# Access via "http://localhost:9001"
+
+version: '3'
+
+services:
+
+  etherpad:
+    image: indiehosters/etherpad
+    container_name: etherpad
+    ports:
+      - 9001:9001
+    depends_on:
+      - db
+    environment:
+      ETHERPAD_ADMIN_USER: ${ETHERPAD_ADMIN_USER}
+      ETHERPAD_ADMIN_PASSWORD: ${ETHERPAD_ADMIN_PASSWORD}
+      ETHERPAD_DB_PASSWORD: mysql
+    restart: always
+
+  db:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: mysql
+    volumes:
+      - ./mysql_data:/var/lib/mysql
+    restart: always
